@@ -1,19 +1,15 @@
 const socket = io();
-let user = 'user1'; // You can set the initial user or determine it based on some logic
-
-// Example messages for simulation
+let user = 'user1'; // Initial user
 const user1Messages = [
     "Hello, how are you?",
     "Did you receive my last message?",
     "Let's meet up tomorrow!"
 ];
-
 const user2Messages = [
     "I'm good, thanks! How about you?",
     "Yes, I did. I'll be there!",
     "Great! See you then."
 ];
-
 let user1Index = 0;
 let user2Index = 0;
 

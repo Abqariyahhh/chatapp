@@ -10,9 +10,9 @@ const io = socketIo(server);
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Basic route handler
+// Serve the main HTML file
 app.get('/', (req, res) => {
-    res.send('Welcome to the chat app!');
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Handle WebSocket connections
