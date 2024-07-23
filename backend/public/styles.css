@@ -1,41 +1,36 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 #chat-box {
     flex: 1;
     overflow-y: auto;
     padding: 10px;
-    border-bottom: 2px solid #ddd;
-}
-
-#input-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-top: 2px solid #ddd;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
 }
 
 #message-input {
-    flex: 1;
+    width: calc(100% - 90px); /* Adjust for button width */
     padding: 10px;
-    border-radius: 5px;
     border: 1px solid #ccc;
-    margin-right: 10px;
+    border-radius: 5px;
 }
 
 #send-button {
-    padding: 10px 15px;
+    width: 80px;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     background-color: #007bff;
     color: white;
     cursor: pointer;
+    margin-left: 10px;
 }
 
 #send-button:hover {
@@ -43,22 +38,24 @@ body {
 }
 
 .message {
-    padding: 10px;
-    border-radius: 5px;
+    padding: 8px 12px;
     margin-bottom: 10px;
-    max-width: 60%;
-    word-wrap: break-word;
+    border-radius: 5px;
+    max-width: fit-content;
     display: inline-block;
+    word-wrap: break-word;
 }
 
 .user1 {
-    background-color: #d0f0d0;
+    background-color: #d1e7dd;
+    color: #000;
     text-align: right;
     margin-left: auto;
 }
 
 .user2 {
-    background-color: #f0f0f0;
+    background-color: #f8d7da;
+    color: #000;
     text-align: left;
     margin-right: auto;
 }
