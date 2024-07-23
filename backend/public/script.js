@@ -1,37 +1,34 @@
 const socket = io();
-let user = null; // User will be assigned when they connect
+let user = 'user1'; // Set initial user
 
-// Assign user on connection
-socket.on('connect', () => {
-    user = socket.id;
-});
-
-// Send a message
+// Function to send a message
 function sendMessage() {
     const input = document.getElementById('message-input');
     const message = input.value.trim();
     if (message) {
-        socket.emit('chat message', { text: message, user });
+        const msg = {
+            text: message,
+            user: user
+        };
+        socket.emit('chat message', msg);
         input.value = '';
     }
 }
 
-// Send message on button click
+// Event listener for send button
 document.getElementById('send-button').addEventListener('click', sendMessage);
 
-// Send message on Enter key press
-document.getElementById('message-input').addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        event.preventDefault();
+// Event listener for Enter key
+document.getElementById('message-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
         sendMessage();
     }
 });
 
-// Display received messages
-socket.on('chat message', (msg) => {
+// Handle incoming messages
+socket.on('chat message', function(msg) {
     const messageElement = document.createElement('div');
-    messageElement.classList.add('message');
-    messageElement.classList.add(msg.user === user ? 'user1' : 'user2');
+    messageElement.classList.add('message', msg.user);
     messageElement.textContent = msg.text;
     document.getElementById('chat-box').appendChild(messageElement);
     document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
