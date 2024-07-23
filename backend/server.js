@@ -7,8 +7,15 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Basic route handler
+app.get('/', (req, res) => {
+    res.send('Welcome to the chat app!');
+});
+
+// Handle WebSocket connections
 io.on('connection', (socket) => {
     console.log('A user connected');
     
@@ -21,6 +28,7 @@ io.on('connection', (socket) => {
     });
 });
 
+// Use environment variable for port or default to 3002
 const PORT = process.env.PORT || 3002;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
