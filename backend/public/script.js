@@ -1,57 +1,48 @@
 const socket = io();
-let user = 'user1'; // Default user
-let user1Joined = false;
-let user2Joined = false;
 
-document.getElementById('send-button').addEventListener('click', () => {
+let currentUser = ''; // Will be set to 'user1' or 'user2'
+
+const chatBox = document.getElementById('chat-box');
+const messageInput = document.getElementById('message-input');
+const sendButton = document.getElementById('send-button');
+
+const determineUser = () => {
+    socket.emit('check user'); // Notify server to determine current user
+};
+
+sendButton.addEventListener('click', () => {
     sendMessage();
 });
 
-document.getElementById('message-input').addEventListener('keypress', (e) => {
+messageInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         sendMessage();
     }
 });
 
-function sendMessage() {
-    const input = document.getElementById('message-input');
-    const messageText = input.value.trim();
-
-    if (messageText) {
-        const msg = {
-            text: messageText,
-            user: user
-        };
-        socket.emit('chat message', msg);
-        input.value = '';
-        input.focus();
+const sendMessage = () => {
+    const message = messageInput.value.trim();
+    if (message) {
+        socket.emit('chat message', { text: message, user: currentUser });
+        messageInput.value = ''; // Clear input field
     }
-}
+};
 
-// When the chat app starts, the first user is user1
-socket.on('connect', () => {
-    if (!user1Joined) {
-        user1Joined = true;
-        user = 'user1';
-        socket.emit('user joined', 'user1');
-    } else if (!user2Joined) {
-        user2Joined = true;
-        user = 'user2';
-        socket.emit('user joined', 'user2');
-    }
-});
-
-socket.on('chat message', function(msg) {
+socket.on('chat message', (msg) => {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', msg.user);
     messageElement.textContent = msg.text;
-    document.getElementById('chat-box').appendChild(messageElement);
-    document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
-});
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
 
-// Handle the event when a new user joins
-socket.on('user joined', (newUser) => {
-    if (newUser === 'user2') {
-        user = 'user2';
+    // Adjust zoom on mobile
+    if (window.innerWidth <= 600) {
+        document.body.style.zoom = 0.9; // Adjust as needed
     }
 });
+
+socket.on('set user', (user) => {
+    currentUser = user;
+});
+
+determineUser();
