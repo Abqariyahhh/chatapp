@@ -1,50 +1,47 @@
 const socket = io();
-let currentUser = 'user1'; // Initial user
-let user = null; // User identifier
+let user = 'user1'; // Initial user
 
-// Handle entering the chat
-socket.on('connect', () => {
-    // Request the server to assign a user
-    socket.emit('request user');
-});
+// Handle sending message
+function sendMessage() {
+    const messageInput = document.getElementById('message-input');
+    const messageText = messageInput.value.trim();
 
-// Handle receiving user assignment
-socket.on('assign user', (assignedUser) => {
-    user = assignedUser;
-    currentUser = user;
-    console.log(`Assigned user: ${user}`);
-});
+    if (messageText) {
+        const msg = {
+            text: messageText,
+            user: user
+        };
+        socket.emit('chat message', msg);
+        messageInput.value = '';
+        messageInput.focus(); // Keep focus on the input after sending
+    }
+}
 
-// Send message when enter key is pressed
-document.getElementById('message-input').addEventListener('keypress', (e) => {
+// Handle Enter key press for sending message
+document.getElementById('message-input').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
+        e.preventDefault();
         sendMessage();
     }
 });
 
-// Send message when send button is clicked
-document.getElementById('send-button').addEventListener('click', sendMessage);
+// Handle Send button click
+document.getElementById('send-button').addEventListener('click', function() {
+    sendMessage();
+});
 
-function sendMessage() {
-    const messageInput = document.getElementById('message-input');
-    const message = messageInput.value.trim();
-
-    if (message) {
-        const msg = {
-            text: message,
-            user: user
-        };
-        socket.emit('chat message', msg);
-        messageInput.value = ''; // Clear the input field
-        messageInput.focus(); // Refocus the input field
-    }
-}
-
-// Display messages in the chat box
-socket.on('chat message', (msg) => {
+// Handle incoming messages
+socket.on('chat message', function(msg) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', msg.user);
     messageElement.textContent = msg.text;
     document.getElementById('chat-box').appendChild(messageElement);
     document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+});
+
+// Set user after second person joins
+socket.on('connect', () => {
+    socket.on('user joined', (joinedUser) => {
+        user = joinedUser;
+    });
 });
