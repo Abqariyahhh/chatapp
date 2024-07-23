@@ -1,5 +1,5 @@
 const socket = io();
-let user = 'user1'; // Initial user
+let user = null; // User will be set once both users have joined
 
 // Send message on "Enter" key press or "Send" button click
 document.getElementById('send-button').addEventListener('click', sendMessage);
@@ -13,7 +13,7 @@ function sendMessage() {
     const messageInput = document.getElementById('message-input');
     const messageText = messageInput.value.trim();
 
-    if (messageText) {
+    if (messageText && user) {
         const msg = {
             text: messageText,
             user: user
@@ -23,6 +23,18 @@ function sendMessage() {
     }
 }
 
+// Handle connection and determine user role
+socket.on('connect', () => {
+    // Request the server to assign the user
+    socket.emit('request user');
+});
+
+socket.on('user role', (role) => {
+    user = role;
+    console.log(`You are ${user}`);
+});
+
+// Update chat box with incoming messages
 socket.on('chat message', function(msg) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', msg.user);
