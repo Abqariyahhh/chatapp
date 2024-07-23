@@ -79,7 +79,7 @@ body {
 
 .message {
     padding: 10px;
-    margin: 5px 0;
+    margin: 5px;
     border-radius: 10px;
     max-width: 80%;
     word-wrap: break-word;
@@ -89,33 +89,33 @@ body {
 }
 
 .user1 {
-    background-color: #f0f0f0;
-    align-self: flex-start; /* Align messages from user1 to the start (left) */
-    margin-right: auto;
+    background-color: #d0f0d0;
+    align-self: flex-end; /* Align messages from user1 to the end (right) */
+    margin-left: auto;
 }
 
 .user1::before {
     content: '';
     position: absolute;
-    left: -10px;
-    border-right: 10px solid #f0f0f0;
-    border-left: 0;
+    right: -10px;
+    border-left: 10px solid #d0f0d0;
+    border-right: 0;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
 }
 
 .user2 {
-    background-color: #d0f0d0;
-    align-self: flex-end; /* Align messages from user2 to the end (right) */
-    margin-left: auto;
+    background-color: #f0f0f0;
+    align-self: flex-start; /* Align messages from user2 to the start (left) */
+    margin-right: auto;
 }
 
 .user2::before {
     content: '';
     position: absolute;
-    right: -10px;
-    border-left: 10px solid #d0f0d0;
-    border-right: 0;
+    left: -10px;
+    border-right: 10px solid #f0f0f0;
+    border-left: 0;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
 }
