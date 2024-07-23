@@ -1,30 +1,29 @@
 const socket = io();
-let currentUser = 'user1'; // Initial user
 
-// Function to send a message
+// Track the users
+let user = 'user1'; // Default to user1 initially
+
+// Listen for the initial server message to set the user
+socket.on('set user', (assignedUser) => {
+    user = assignedUser;
+    console.log(`You are now ${user}`);
+});
+
+// Send message to the server
 function sendMessage() {
-    const input = document.getElementById('message-input');
-    const message = input.value.trim();
-    
-    if (message) {
+    const message = document.getElementById('message-input').value;
+    if (message.trim() !== '') {
         const msg = {
             text: message,
-            user: currentUser
+            user: user
         };
         socket.emit('chat message', msg);
-        input.value = ''; // Clear the input field
-        currentUser = (currentUser === 'user1') ? 'user2' : 'user1'; // Toggle user for next message
+        document.getElementById('message-input').value = '';
     }
 }
 
 document.getElementById('send-button').addEventListener('click', sendMessage);
-document.getElementById('message-input').addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
-});
 
-// Handle incoming messages
 socket.on('chat message', function(msg) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', msg.user);

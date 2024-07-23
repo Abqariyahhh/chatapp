@@ -7,28 +7,28 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve the main HTML file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+let users = 0; // To track the number of users
 
-// Handle WebSocket connections
 io.on('connection', (socket) => {
     console.log('A user connected');
-    
+    users++;
+
+    // Assign user based on number of users
+    const userAssigned = users === 1 ? 'user1' : 'user2';
+    socket.emit('set user', userAssigned);
+
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
     });
 
     socket.on('disconnect', () => {
         console.log('User disconnected');
+        users--;
     });
 });
 
-// Use environment variable for port or default to 3002
 const PORT = process.env.PORT || 3002;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
