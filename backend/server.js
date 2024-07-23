@@ -14,7 +14,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.on('connection', (socket) => {
     console.log('A user connected');
     
-    // Emit messages received from clients to all clients
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
     });
