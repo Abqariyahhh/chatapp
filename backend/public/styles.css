@@ -5,62 +5,123 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     display: flex;
     flex-direction: column;
     height: 100vh;
     margin: 0;
-    background-color: #f4f4f4;
+    background: linear-gradient(135deg, #f4f4f4, #e0e0e0);
+    color: #333;
+}
+
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 #chat-box {
     flex: 1;
-    padding: 10px;
+    padding: 15px;
     overflow-y: auto;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+}
+
+#input-container {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background: #fff;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #message-input {
-    width: calc(100% - 90px);
+    flex: 1;
     padding: 10px;
-    margin: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#message-input:focus {
+    border-color: #007bff;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 #send-button {
-    width: 80px;
-    padding: 10px;
-    margin: 10px;
+    padding: 10px 20px;
+    margin-left: 10px;
     border: none;
-    border-radius: 5px;
-    background-color: #007bff;
+    border-radius: 20px;
+    background: #007bff;
     color: white;
+    font-size: 16px;
     cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
 }
 
 #send-button:hover {
-    background-color: #0056b3;
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+#send-button:active {
+    transform: scale(0.95);
 }
 
 .message {
     padding: 10px;
     margin: 5px 0;
-    border-radius: 5px;
+    border-radius: 10px;
     max-width: 80%;
     word-wrap: break-word;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.message::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
 }
 
 .user1 {
     background-color: #f0f0f0;
     text-align: left;
+    margin-right: auto;
+}
+
+.user1::before {
+    left: -10px;
+    border-right: 10px solid #f0f0f0;
+    border-left: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
 }
 
 .user2 {
     background-color: #d0f0d0;
     text-align: right;
+    margin-left: auto;
 }
+
+.user2::before {
+    right: -10px;
+    border-left: 10px solid #d0f0d0;
+    border-right: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
 @media (max-width: 600px) {
     #message-input {
         width: calc(100% - 70px);
