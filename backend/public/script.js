@@ -39,6 +39,14 @@ socket.on('chat message', function(msg) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', msg.user);
     messageElement.textContent = msg.text;
+    
+    // Align message bubbles based on user role
+    if (msg.user === 'user2') {
+        messageElement.style.textAlign = 'right'; // Align user2's messages to the right
+    } else {
+        messageElement.style.textAlign = 'left'; // Align user1's messages to the left
+    }
+
     document.getElementById('chat-box').appendChild(messageElement);
     document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
 });

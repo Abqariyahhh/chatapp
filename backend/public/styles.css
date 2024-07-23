@@ -9,13 +9,12 @@ body {
 }
 
 #chat-box {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
+     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between messages */
-}
+    align-items: flex-start; /* Align messages to the start by default */
+    max-width: 100%;
+    box-sizing: border-box;}
 
 #input-container {
     display: flex;
@@ -43,23 +42,22 @@ body {
 }
 
 .message {
-    padding: 10px;
-    border-radius: 5px;
-    max-width: fit-content;
+     padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    max-width: 60%; /* Limit the width of message bubbles */
     word-wrap: break-word;
-    display: block; /* Ensures each message is on its own line */
+    box-sizing: border-box;
 }
-
 .user1 {
     background-color: #d0f0d0;
-    align-self: flex-end;
-    text-align: right;
-}
+    align-self: flex-start;
+    }
 
 .user2 {
     background-color: #f0f0f0;
-    align-self: flex-start;
-    text-align: left;
+    align-self: flex-end;
+    
 }
 
 @media (max-width: 600px) {
