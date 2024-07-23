@@ -7,25 +7,29 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+let users = []; // To keep track of users
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.send('Welcome to the chat app!');
 });
 
-let userCount = 0;
-
 io.on('connection', (socket) => {
-    userCount++;
-    const userId = userCount % 2 === 0 ? 'user2' : 'user1';
-    socket.emit('assign user', userId);
+    console.log('A user connected');
     
+    // Assign user
+    let assignedUser = users.length === 0 ? 'user1' : 'user2';
+    users.push(assignedUser);
+    socket.emit('assign user', assignedUser);
+
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
     });
 
     socket.on('disconnect', () => {
-        userCount--;
+        console.log('User disconnected');
+        users = users.filter(user => user !== assignedUser); // Clean up user list
     });
 });
 
