@@ -53,11 +53,11 @@ body {
 
 .message {
     padding: 10px;
-    margin: 5px 0;
+    margin: 5px;
     border-radius: 5px;
-    max-width: 60%;
+    max-width: fit-content; /* Adjusts width to fit content */
     word-wrap: break-word;
-}
+    display: inline-block; /* Ensures the message box fits content */}
 
 .user1 {
     background-color: #d1ecf1;
@@ -69,4 +69,7 @@ body {
     background-color: #f8d7da;
     text-align: left;
     margin-right: auto;
+}
+input, button {
+    font-size: 16px; /* Ensures the input field font size does not trigger zoom */
 }

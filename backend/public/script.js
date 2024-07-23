@@ -1,28 +1,34 @@
 const socket = io();
-let user = 'user1'; // Initial user
+let currentUser = 'user1'; // Initial user
+let user2Joined = false; // To check if user 2 has joined
 
-// Send message on button click or enter key press
+// Send message when the button is clicked or Enter is pressed
 function sendMessage() {
     const messageInput = document.getElementById('message-input');
-    const message = messageInput.value.trim();
-    if (message) {
+    const messageText = messageInput.value.trim();
+    
+    if (messageText) {
         const msg = {
-            text: message,
-            user: user
+            text: messageText,
+            user: currentUser
         };
         socket.emit('chat message', msg);
         messageInput.value = '';
-        messageInput.focus();
     }
 }
 
-document.getElementById('send-button').addEventListener('click', sendMessage);
-document.getElementById('message-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
+// Handle Enter key to send message
+document.getElementById('message-input').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent newline in input field
         sendMessage();
     }
 });
 
+// Handle Send button click to send message
+document.getElementById('send-button').addEventListener('click', sendMessage);
+
+// Scroll to the latest message when new messages are added
 socket.on('chat message', function(msg) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', msg.user);
@@ -31,7 +37,10 @@ socket.on('chat message', function(msg) {
     document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
 });
 
-// Listen for new connections and assign user roles
-socket.on('assign user', function(userId) {
-    user = userId;
+// Update current user based on socket connection
+socket.on('connect', function() {
+    if (!user2Joined) {
+        currentUser = 'user2'; // Set to user2 if no other user is joined
+        user2Joined = true;
+    }
 });
