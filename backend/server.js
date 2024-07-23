@@ -9,23 +9,23 @@ const io = socketIo(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-let users = 0; // To track the number of users
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+let userCount = 0;
 
 io.on('connection', (socket) => {
-    console.log('A user connected');
-    users++;
-
-    // Assign user based on number of users
-    const userAssigned = users === 1 ? 'user1' : 'user2';
-    socket.emit('set user', userAssigned);
-
+    userCount++;
+    const userId = userCount % 2 === 0 ? 'user2' : 'user1';
+    socket.emit('assign user', userId);
+    
     socket.on('chat message', (msg) => {
         io.emit('chat message', msg);
     });
 
     socket.on('disconnect', () => {
-        console.log('User disconnected');
-        users--;
+        userCount--;
     });
 });
 
